@@ -1,0 +1,37 @@
+#!/bin/bash
+
+flake8 --exclude "*.env" .
+
+if [ $? -ne 0 ]
+then
+  echo "failed to create commit"
+  exit 1
+fi
+
+black . --check --quiet --exclude ./.env --line-length 120
+
+if [ $? -ne 0 ]
+then
+  black . --exclude ./.env --line-length 120 -q
+  echo "failed to create commit"
+  exit 1
+fi
+
+isort --m 7 --check-only --quiet --skip .env
+
+if [ $? -ne 0 ]
+then
+  isort --m 7 --atomic --apply -q  --skip .env
+  echo "failed to create commit"
+  exit 1
+fi
+
+# run tests
+source .env/bin/activate
+pytest -q --disable-pytest-warnings tests
+if [ $? -ne 0 ]
+then
+  echo "failed to create commit"
+  exit 1
+fi
+deactivate

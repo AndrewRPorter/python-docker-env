@@ -1,0 +1,10 @@
+version: '3.1'
+
+services:
+    cron-env:
+        build:
+            context: ../
+            dockerfile: Dockerfile
+        container_name: cron-env
+        environment:
+            - TESTING=1
