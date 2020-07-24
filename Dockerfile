@@ -4,7 +4,7 @@ FROM python:3.7-slim
 RUN apt-get update && apt-get -y install -qq cron
 
 # install crontab
-ENV TESTING=2
+ENV TESTING=1
 
 ENV CONTAINER_HOME=/opt/
 WORKDIR $CONTAINER_HOME
